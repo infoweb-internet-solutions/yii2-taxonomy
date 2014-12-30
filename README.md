@@ -32,16 +32,21 @@ Once the extension is installed, simply modify your backend configuration as fol
     'taxonomy' => [
         'class' => 'infoweb\taxonomy\Module',
     ],
+    ...
+    'cms' => [
+        sideBarItems => [
+            'modules' => [
+                [
+                    'label'     => 'Categories',
+                    'i18nGroup' => 'infoweb/taxonomy',
+                    'url'       => '/taxonomy/term',
+                    'authItem'  => 'showTaxonomyModule',
+                ],
+            ],
+        ],
+    ],
 ],
 ```
-
-@todo
-[
-    'label'     => 'Categories',
-    'i18nGroup' => 'infoweb/taxonomy',
-    'url'       => '/taxonomy/term',
-    'authItem'  => 'showTaxonomyModule',
-],
 
 Import the translations and use category 'infoweb/taxonomy':
 ```
