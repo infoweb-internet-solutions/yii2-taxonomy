@@ -1,0 +1,4 @@
+
+.table tr td:first-child {
+    padding-bottom: 8px;
+}

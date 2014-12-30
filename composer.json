@@ -1,0 +1,35 @@
+{
+	"name": "infoweb-internet-solutions/yii2-taxonomy",
+	"description": "Taxonomy module for Yii2",
+	"keywords": ["yii2", "yii2-taxonomy", "taxonomy", "infoweb"],
+	"type": "yii2-extension",
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/infoweb-internet-solutions/yii2-taxonomy/issues?state=open",
+        "source": "https://github.com/infoweb-internet-solutions/yii2-taxonomy"
+    },
+    "authors": [
+        {
+            "name": "Fabio Maggio",
+            "email": "fabio@infoweb.be",
+            "homepage": "https://github.com/fabiomaggio"
+        },
+        {
+            "name": "Ruben Heymans",
+            "email": "ruben@infoweb.be",
+            "homepage": "http://www.infoweb.be/"
+        }
+    ],
+    "minimum-stability": "dev",
+	"require": {
+	   "yiisoft/yii2": "*",
+      "bower-asset/jquery-cookie": "@stable",
+      "bower-asset/bootstrap-select": "@stable",
+      "wbraganca/yii2-nested-set-behavior": "dev-infoweb as dev-master"
+	},
+	"autoload": {
+		"psr-4": {
+            "infoweb\\partials\\": ""
+        }
+	}
+}
