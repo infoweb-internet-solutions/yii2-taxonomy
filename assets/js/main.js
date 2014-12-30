@@ -1,5 +1,5 @@
 
-var openTreeItems = $.cookie('infoweb-ecommerce-categories-open-tree-items');
+var openTreeItems = $.cookie('infoweb-taxonomy-open-tree-items');
 
 if (typeof openTreeItems === 'undefined') {
     openTreeItems = [];
@@ -18,23 +18,23 @@ $(document).on('ready pjax:success', function() {
         // Get action
         var action = $(this).data('action');
 
-        // Get category id
-        var category_id = $(this).parent().data('category');
+        // Get term id
+        var term_id = $(this).parent().data('term');
 
         if (action == 'collapse') {
 
-            if (!_.contains(openTreeItems, category_id)) {
-                openTreeItems.push(category_id);
+            if (!_.contains(openTreeItems, term_id)) {
+                openTreeItems.push(term_id);
             }
 
         } else {
 
-            openTreeItems = _.without(openTreeItems, category_id);
+            openTreeItems = _.without(openTreeItems, term_id);
             console.log(openTreeItems);
         }
 
         // Create cookie
-        $.cookie('infoweb-ecommerce-categories-open-tree-items', JSON.stringify(openTreeItems), { expires: 7, path: '/'});
+        $.cookie('infoweb-taxonomy-open-tree-items', JSON.stringify(openTreeItems), { expires: 7, path: '/'});
 
     });
 
@@ -42,11 +42,11 @@ $(document).on('ready pjax:success', function() {
      * Active toggle
      * @todo Move to cms, or remove
      */
-    $(document).on('click', '[data-toggle-active-category]', function(e){
+    $(document).on('click', '[data-toggle-active-term]', function(e){
 
         e.preventDefault();
 
-        var id = $(this).data('toggle-active-category');
+        var id = $(this).data('toggle-active-term');
 
         $.ajax({
             url: 'active',
@@ -72,7 +72,7 @@ $(document).on('ready pjax:success', function() {
 
         expandBtnHTML: '<button data-action="collapse" class="collapsible btn fa-fw fa fa-chevron-down"></button>',
         collapseBtnHTML: '<button data-action="expand" class="expand btn fa-fw fa fa-chevron-right"></button>',
-        cookieName: 'infoweb-ecommerce-categories-open-tree-items',
+        cookieName: 'infoweb-taxonomy-open-tree-items',
         loadFromCookie: true,
         callback: function(l,e) {
             // l is the main container
@@ -81,7 +81,7 @@ $(document).on('ready pjax:success', function() {
             // @todo Improve this code
 
             // Initialize vars
-            var category = $(e).data('category'),
+            var term = $(e).data('term'),
                 level = $(e).closest('ol').data('level'),
                 parent = '',
                 parentOl = $(e).closest('ol'),
@@ -90,15 +90,15 @@ $(document).on('ready pjax:success', function() {
             // Get the parent node
             // Siblings found, use previous 'li'
             if ($(e).siblings().length) {
-                parent = $(e).prev().data('category');
+                parent = $(e).prev().data('term');
             // No siblings, use parent and find the closest (previous) 'li'
             } else {
-                parent = $(e).parent().closest('li').data('category');
+                parent = $(e).parent().closest('li').data('term');
             }
 
             // If the node is the first sibling, we add it before the next sibling
             if (typeof parent === 'undefined') {
-                parent = $(e).next().data('category');
+                parent = $(e).next().data('term');
                 direction = 'before';
             }
 
@@ -115,7 +115,7 @@ $(document).on('ready pjax:success', function() {
             }
 
             /*
-            console.log('category: ' + category);
+            console.log('term: ' + term);
             console.log('parent: ' + parent);
             console.log('level: ' + level);
             console.log('direction: ' + direction);
@@ -126,7 +126,7 @@ $(document).on('ready pjax:success', function() {
                 url: 'sort',
                 type: 'POST',
                 data: {
-                    category : category,
+                    term : term,
                     parent : parent,
                     direction: direction
                 },

@@ -1,5 +1,5 @@
 <?php
-namespace infoweb\catalogue\assets;
+namespace infoweb\taxonomy\assets;
 
 use yii\web\AssetBundle as AssetBundle;
 

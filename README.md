@@ -35,6 +35,14 @@ Once the extension is installed, simply modify your backend configuration as fol
 ],
 ```
 
+@todo
+[
+    'label'     => 'Categories',
+    'i18nGroup' => 'infoweb/taxonomy',
+    'url'       => '/taxonomy/term',
+    'authItem'  => 'showTaxonomyModule',
+],
+
 Import the translations and use category 'infoweb/taxonomy':
 ```
 yii i18n/import @infoweb/taxonomy/messages

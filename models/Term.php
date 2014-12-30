@@ -1,6 +1,6 @@
 <?php
 
-namespace infoweb\catalogue\models;
+namespace infoweb\taxonomy\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -9,10 +9,8 @@ use dosamigos\translateable\TranslateableBehavior;
 use wbraganca\behaviors\NestedSetBehavior;
 use wbraganca\behaviors\NestedSetQuery;
 
-use infoweb\catalogue\models\product\Product;
-
 /**
- * This is the model class for table "ecommerce_categories".
+ * This is the model class for table "taxonomy".
  *
  * @property string $id
  * @property string $root
@@ -22,18 +20,15 @@ use infoweb\catalogue\models\product\Product;
  * @property integer $active
  * @property string $created_at
  * @property string $updated_at
- *
- * @property \infoweb\catalogue\models\product\Category[] $productCategories
- * @property Product[] $products
  */
-class Category extends ActiveRecord
+class Term extends ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'ecommerce_categories';
+        return 'terms';
     }
 
     /**
@@ -97,24 +92,8 @@ class Category extends ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getProductCategories()
-    {
-        return $this->hasMany(\infoweb\catalogue\models\product\Category::className(), ['category_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getProducts()
-    {
-        return $this->hasMany(Product::className(), ['id' => 'product_id'])->viaTable('ecommerce_products_categories', ['category_id' => 'id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getTranslations()
     {
-        return $this->hasMany(Lang::className(), ['category_id' => 'id']);
+        return $this->hasMany(Lang::className(), ['term_id' => 'id']);
     }
 }

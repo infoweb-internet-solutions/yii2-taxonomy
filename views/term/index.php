@@ -2,28 +2,21 @@
 
 use yii\helpers\Html;
 
-use infoweb\catalogue\models\Category;
-use infoweb\catalogue\CatalogueAsset;
+use infoweb\taxonomy\models\Term;
+use infoweb\taxonomy\TaxonomyAsset;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel infoweb\catalogue\models\search\CategorySearch */
+/* @var $searchModel infoweb\taxonomy\models\TermSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('ecommerce', 'Categories');
 $this->params['breadcrumbs'][] = $this->title;
 
-CatalogueAsset::register($this);
-
-/*
-$category = Category::findOne(5);
-$parent = Category::findOne(4);
-
-$category->moveNode($parent, 7, 1);
-*/
+TaxonomyAsset::register($this);
 
 ?>
-<div class="category-index">
+<div class="term-index">
 
     <h1>
         <?= Html::encode($this->title) ?>

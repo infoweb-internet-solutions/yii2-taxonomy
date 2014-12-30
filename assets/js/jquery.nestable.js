@@ -204,7 +204,7 @@
                 that = this;
 
             $.each(openTreeItems, function( index, value ) {
-                var li = $('[data-category='+value+']');
+                var li = $('[data-term='+value+']');
                 that.collapseItem(li);
             });
 

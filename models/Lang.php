@@ -1,21 +1,21 @@
 <?php
 
-namespace infoweb\catalogue\models;
+namespace infoweb\taxonomy\models;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 
 /**
- * This is the model class for table "ecommerce_categories_lang".
+ * This is the model class for table "terms_lang".
  *
- * @property integer $category_id
+ * @property integer $term_id
  * @property string $language
  * @property string $name
  * @property string $created_at
  * @property string $updated_at
  *
- * @property Category $category
+ * @property Term $term
  */
 class Lang extends \yii\db\ActiveRecord
 {
@@ -24,7 +24,7 @@ class Lang extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'ecommerce_categories_lang';
+        return 'terms_lang';
     }
 
     /**
@@ -53,7 +53,7 @@ class Lang extends \yii\db\ActiveRecord
             // Required
             [['language'], 'required'],
             // Only required for existing records
-            [['category_id'], 'required', 'when' => function($model) {
+            [['term_id'], 'required', 'when' => function($model) {
                 return !$model->isNewRecord;
             }],
             // Only required for the app language
@@ -63,7 +63,7 @@ class Lang extends \yii\db\ActiveRecord
             // Trim
             [['name'], 'trim'],
             // Types
-            [['category_id', 'created_at', 'updated_at'], 'integer'],
+            [['term_id', 'created_at', 'updated_at'], 'integer'],
             [['language'], 'string', 'max' => 2],
             [['name'], 'string', 'max' => 255],
         ];
@@ -75,7 +75,7 @@ class Lang extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'category_id' => Yii::t('ecommerce', 'Category ID'),
+            'term_id' => Yii::t('ecommerce', 'Category ID'),
             'language' => Yii::t('ecommerce', 'Language'),
             'name' => Yii::t('ecommerce', 'Name'),
             'created_at' => Yii::t('ecommerce', 'Created At'),
@@ -86,8 +86,8 @@ class Lang extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCategory()
+    public function getTerm()
     {
-        return $this->hasOne(Category::className(), ['id' => 'category_id']);
+        return $this->hasOne(Term::className(), ['id' => 'term_id']);
     }
 }

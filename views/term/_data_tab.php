@@ -4,11 +4,11 @@ use kartik\widgets\SwitchInput;
 ?>
 <div class="tab-content data-tab">
 
-    <div class="form-group field-category-parent_id">
-        <label for="category-parent_id" class="control-label"><?= Yii::t('ecommerce', 'Parent'); ?></label>
-        <?= Html::dropDownList('Category[parent_id]', $parent_id, $terms, [
+    <div class="form-group field-term-parent_id">
+        <label for="term-parent_id" class="control-label"><?= Yii::t('ecommerce', 'Parent'); ?></label>
+        <?= Html::dropDownList('Term[parent_id]', $parent_id, $terms, [
             'class' => 'form-control',
-            'id' => 'category-parent_id',
+            'id' => 'term-parent_id',
             'options' => $model->disabled(),
         ]) ?>
         <div class="help-block"></div>

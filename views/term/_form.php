@@ -5,11 +5,11 @@ use yii\widgets\ActiveForm;
 use yii\bootstrap\Tabs;
 
 /* @var $this yii\web\View */
-/* @var $model infoweb\catalogue\models\Category */
+/* @var $model infoweb\taxonomy\models\Term */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="category-form">
+<div class="term-form">
 
     <?php // Flash messages ?>
     <?php echo $this->render('_flash_messages'); ?>
@@ -17,7 +17,7 @@ use yii\bootstrap\Tabs;
     <?php
     // Init the form
     $form = ActiveForm::begin([
-        'id'                        => 'category-form',
+        'id'                        => 'term-form',
         'options'                   => ['class' => 'tabbed-form'],
         'enableAjaxValidation'      => true,
         'enableClientValidation'    => false

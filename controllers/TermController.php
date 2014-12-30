@@ -1,6 +1,6 @@
 <?php
 
-namespace infoweb\catalogue\controllers;
+namespace infoweb\taxonomy\controllers;
 
 use Yii;
 use yii\web\Controller;
@@ -11,14 +11,14 @@ use yii\widgets\ActiveForm;
 use yii\base\Model;
 use yii\base\Exception;
 
-use infoweb\catalogue\models\Category;
-use infoweb\catalogue\models\search\CategorySearch;
-use infoweb\catalogue\models\Lang;
+use infoweb\taxonomy\models\Term;
+use infoweb\taxonomy\models\TermSearch;
+use infoweb\taxonomy\models\Lang;
 
 /**
- * CategoryController implements the CRUD actions for Category model.
+ * TermController implements the CRUD actions for Term model.
  */
-class CategoryController extends Controller
+class TermController extends Controller
 {
     public function behaviors()
     {
@@ -34,7 +34,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Lists all Category models.
+     * Lists all Term models.
      * @return mixed
      */
     public function actionIndex()
@@ -43,12 +43,12 @@ class CategoryController extends Controller
         $root = 0;
 
         return $this->render('index', [
-            'tree' => Category::find()->sortableTree($root),
+            'tree' => Term::find()->sortableTree($root),
         ]);
     }
 
     /**
-     * Creates a new Category model.
+     * Creates a new Term model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
@@ -61,7 +61,7 @@ class CategoryController extends Controller
         $root = 1;
 
         // Load the model
-        $model = new Category(['active' => 1]);
+        $model = new Term(['active' => 1]);
 
         try {
 
@@ -98,7 +98,7 @@ class CategoryController extends Controller
                     // Wrap the everything in a database transaction
                     $transaction = Yii::$app->db->beginTransaction();
 
-                    $parent = Category::findOne($post['Category']['parent_id']);
+                    $parent = Term::findOne($post['Term']['parent_id']);
 
                     // Save the main model
                     if (!$model->load($post) || !$model->appendTo($parent)) {
@@ -125,7 +125,7 @@ class CategoryController extends Controller
                     $model->language = Yii::$app->language;
 
                     // Set flash message
-                    Yii::$app->getSession()->setFlash('catalogue', Yii::t('app', '"{item}" has been created', ['item' => $model->name]));
+                    Yii::$app->getSession()->setFlash('term', Yii::t('app', '"{item}" has been created', ['item' => $model->name]));
 
                     // Take appropriate action based on the pushed button
                     if (isset($post['close'])) {
@@ -145,7 +145,7 @@ class CategoryController extends Controller
             }
 
             // Set flash message
-            Yii::$app->getSession()->setFlash('catalogue-error', $e->getMessage());
+            Yii::$app->getSession()->setFlash('term-error', $e->getMessage());
         }
 
         return $this->render('create', [
@@ -156,7 +156,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Updates an existing Category model.
+     * Updates an existing Term model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -164,7 +164,7 @@ class CategoryController extends Controller
     public function actionUpdate($id)
     {
         $languages = Yii::$app->params['languages'];
-        $model = Category::findOne($id);
+        $model = Term::findOne($id);
 
         // @todo Get the root
         $root = 1;
@@ -203,7 +203,7 @@ class CategoryController extends Controller
                     // Wrap the everything in a database transaction
                     $transaction = Yii::$app->db->beginTransaction();
 
-                    $parent = Category::findOne($post['Category']['parent_id']);
+                    $parent = Term::findOne($post['Term']['parent_id']);
 
                     $previous = $model->prev()->one();
 
@@ -255,7 +255,7 @@ class CategoryController extends Controller
                     $model->language = Yii::$app->language;
 
                     // Set flash message
-                    Yii::$app->getSession()->setFlash('catalogue', Yii::t('app', '{item} has been updated', ['item' => $model->name]));
+                    Yii::$app->getSession()->setFlash('Term', Yii::t('app', '{item} has been updated', ['item' => $model->name]));
 
                     // Take appropriate action based on the pushed button
                     if (isset($post['close'])) {
@@ -274,7 +274,7 @@ class CategoryController extends Controller
             }
 
             // Set flash message
-            Yii::$app->getSession()->setFlash('catalogue-error', $e->getMessage());
+            Yii::$app->getSession()->setFlash('term-error', $e->getMessage());
         }
 
         return $this->render('update', [
@@ -285,7 +285,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Deletes an existing Category model and it's descendants
+     * Deletes an existing Term model and it's descendants
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -304,27 +304,27 @@ class CategoryController extends Controller
                 $transaction->rollBack();
             }
             // Set flash message
-            Yii::$app->getSession()->setFlash('catalogue-error', $e->getMessage());
+            Yii::$app->getSession()->setFlash('term-error', $e->getMessage());
         }
 
         // Set flash message
         $model->language = Yii::$app->language;
-        Yii::$app->getSession()->setFlash('catalogue', Yii::t('ecommerce', '{item} and descendants have been deleted', ['item' => $model->name]));
+        Yii::$app->getSession()->setFlash('term', Yii::t('ecommerce', '{item} and descendants have been deleted', ['item' => $model->name]));
 
         return $this->redirect(['index']);
     }
 
 
     /**
-     * Finds the Category model based on its primary key value.
+     * Finds the Term model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Category the loaded model
+     * @return Term the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Category::findOne($id)) !== null) {
+        if (($model = Term::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -344,20 +344,20 @@ class CategoryController extends Controller
             //if(!isset($post['ids']))
                 //throw new Exception(Yii::t('infoweb/menu', 'Invalid items'));
 
-            // The category you dragged to change it's position
-            $category = Category::findOne($post['category']);
+            // The term you dragged to change it's position
+            $term = Term::findOne($post['term']);
 
-            // The parent or target of the category after your dragged it
-            $parent = Category::findOne($post['parent']);
+            // The parent or target of the term after your dragged it
+            $parent = Term::findOne($post['parent']);
 
-            // Direction: move the category before, after or first (=new list) the new parent
+            // Direction: move the term before, after or first (=new list) the new parent
             if ($post['direction'] == 'before') {
-                $category->moveBefore($parent);
+                $term->moveBefore($parent);
             }
             elseif ($post['direction'] == 'first') {
-                $category->moveAsFirst($parent);
+                $term->moveAsFirst($parent);
             } else {
-                $category->moveAfter($parent);
+                $term->moveAfter($parent);
             }
 
             $data['status'] = 1;
@@ -385,9 +385,9 @@ class CategoryController extends Controller
         $data['active'] = $model->active;
 
         // Set active status for descendants
-        foreach ($model->descendants()->all() as $category) {
-            $category->active = $model->active;
-            $data['status'] = $category->save();
+        foreach ($model->descendants()->all() as $term) {
+            $term->active = $model->active;
+            $data['status'] = $term->save();
         }
 
         Yii::$app->response->format = 'json';

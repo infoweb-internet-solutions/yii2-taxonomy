@@ -1,11 +1,11 @@
 <?php
-namespace infoweb\catalogue;
+namespace infoweb\taxonomy;
 
 use yii\web\AssetBundle as AssetBundle;
 
 class TaxonomyAsset extends AssetBundle
 {
-    public $sourcePath = '@infoweb/catalogue/assets/';
+    public $sourcePath = '@infoweb/taxonomy/assets/';
     
     public $css = [
         'css/nestedSortable.css',
@@ -20,7 +20,7 @@ class TaxonomyAsset extends AssetBundle
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
         'infoweb\cms\CMSAsset',
-        'infoweb\catalogue\assets\NestableAsset',
-        'infoweb\catalogue\assets\CookieAsset',
+        'infoweb\taxonomy\assets\NestableAsset',
+        'infoweb\taxonomy\assets\CookieAsset',
     ];
 }
