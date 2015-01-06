@@ -150,10 +150,5 @@ $(document).on('ready pjax:success', function() {
         }
     });
 
-    /**
-     * Bootstrap select
-     */
-
-    $('.selectpicker').selectpicker();
 
 });
