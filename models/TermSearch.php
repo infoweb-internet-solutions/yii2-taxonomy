@@ -1,6 +1,6 @@
 <?php
 
-namespace infoweb\taxonomy\models\search;
+namespace infoweb\taxonomy\models;
 
 use Yii;
 use yii\base\Model;

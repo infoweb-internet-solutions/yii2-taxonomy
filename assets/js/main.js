@@ -21,6 +21,8 @@ $(document).on('ready pjax:success', function() {
         // Get term id
         var term_id = $(this).parent().data('term');
 
+        console.log(term_id);
+
         if (action == 'collapse') {
 
             if (!_.contains(openTreeItems, term_id)) {
@@ -30,7 +32,7 @@ $(document).on('ready pjax:success', function() {
         } else {
 
             openTreeItems = _.without(openTreeItems, term_id);
-            console.log(openTreeItems);
+            //console.log(openTreeItems);
         }
 
         // Create cookie
@@ -136,13 +138,13 @@ $(document).on('ready pjax:success', function() {
                     if (data.status == 1)
                     {
                         // @todo Add message
-                        console.log('success');
+                        //console.log('success');
                         $.pjax.reload({container: '#pjax-container'});
 
 
                     } else {
                         // @todo Add message
-                        console.log('fail');
+                        //console.log('fail');
                     }
                 }
             });
