@@ -21,8 +21,6 @@ $(document).on('ready pjax:success', function() {
         // Get term id
         var term_id = $(this).parent().data('term');
 
-        console.log(term_id);
-
         if (action == 'collapse') {
 
             if (!_.contains(openTreeItems, term_id)) {
