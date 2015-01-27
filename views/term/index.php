@@ -10,7 +10,7 @@ use yii\widgets\Pjax;
 /* @var $searchModel infoweb\taxonomy\models\TermSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('ecommerce', 'Categories');
+$this->title = Yii::t('ecommerce', 'Terms');
 $this->params['breadcrumbs'][] = $this->title;
 
 TaxonomyAsset::register($this);
@@ -23,7 +23,7 @@ TaxonomyAsset::register($this);
         <?php // Buttons ?>
         <div class="pull-right">
             <?= Html::a(Yii::t('app', 'Create {modelClass}', [
-                'modelClass' => Yii::t('ecommerce', 'Category'),
+                'modelClass' => Yii::t('ecommerce', 'Term'),
             ]), ['create'], ['class' => 'btn btn-success']) ?>
         </div>
     </h1>

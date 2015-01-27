@@ -37,7 +37,7 @@ Once the extension is installed, simply modify your backend configuration as fol
         sideBarItems => [
             'modules' => [
                 [
-                    'label'     => 'Categories',
+                    'label'     => 'Taxonomy',
                     'i18nGroup' => 'infoweb/taxonomy',
                     'url'       => '/taxonomy/term',
                     'authItem'  => 'showTaxonomyModule',

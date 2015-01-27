@@ -8,7 +8,7 @@ use yii\data\ActiveDataProvider;
 use infoweb\taxonomy\models\Term;
 
 /**
- * CategorySearch represents the model behind the search form about `infoweb\taxonomy\models\Term`.
+ * TermSearch represents the model behind the search form about `infoweb\taxonomy\models\Term`.
  */
 class TermSearch extends Term
 {

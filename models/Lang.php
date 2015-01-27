@@ -75,7 +75,7 @@ class Lang extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'term_id' => Yii::t('ecommerce', 'Category ID'),
+            'term_id' => Yii::t('ecommerce', 'Term ID'),
             'language' => Yii::t('ecommerce', 'Language'),
             'name' => Yii::t('ecommerce', 'Name'),
             'created_at' => Yii::t('ecommerce', 'Created At'),
