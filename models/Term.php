@@ -8,6 +8,7 @@ use yii\db\ActiveRecord;
 use dosamigos\translateable\TranslateableBehavior;
 use wbraganca\behaviors\NestedSetBehavior;
 use wbraganca\behaviors\NestedSetQuery;
+use infoweb\news\models\News;
 
 /**
  * This is the model class for table "taxonomy".
@@ -41,6 +42,7 @@ class Term extends ActiveRecord
                 'class' => TranslateableBehavior::className(),
                 'translationAttributes' => [
                     'name',
+                    'content',
                 ],
             ],
             'timestamp' => [
@@ -78,14 +80,11 @@ class Term extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('ecommerce', 'ID'),
-            'root' => Yii::t('ecommerce', 'Root'),
-            'lft' => Yii::t('ecommerce', 'Lft'),
-            'rgt' => Yii::t('ecommerce', 'Rgt'),
-            'level' => Yii::t('ecommerce', 'Level'),
-            'active' => Yii::t('ecommerce', 'Active'),
-            'created_at' => Yii::t('ecommerce', 'Created At'),
-            'updated_at' => Yii::t('ecommerce', 'Updated At'),
+            'id' => Yii::t('infoweb/taxonomy', 'ID'),
+            'root' => Yii::t('infoweb/taxonomy', 'Root'),
+            'parent' => Yii::t('infoweb/taxonomy', 'Parent'),
+            'level' => Yii::t('infoweb/taxonomy', 'Level'),
+            'active' => Yii::t('infoweb/cms', 'Active'),
         ];
     }
 
@@ -95,5 +94,9 @@ class Term extends ActiveRecord
     public function getTranslations()
     {
         return $this->hasMany(Lang::className(), ['term_id' => 'id']);
+    }
+
+    public function getNews() {
+        return $this->hasOne(News::className(), ['term_id' => 'id']);
     }
 }

@@ -29,13 +29,13 @@ use yii\bootstrap\Tabs;
     // Add the main tabs
     $tabs = [
         [
-            'label' => Yii::t('ecommerce', 'General'),
+            'label' => Yii::t('infoweb/cms', 'General'),
             'content' => $this->render('_default_tab', ['model' => $model, 'form' => $form]),
             'active' => true,
             //'options' => ['class' => 'fade in']
         ],
         [
-            'label' => Yii::t('ecommerce', 'Data'),
+            'label' => Yii::t('infoweb/cms', 'Data'),
             'content' => $this->render('_data_tab', [
                 'model' => $model,
                 'form' => $form,

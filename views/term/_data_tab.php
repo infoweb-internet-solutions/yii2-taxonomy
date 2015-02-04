@@ -5,7 +5,7 @@ use kartik\widgets\SwitchInput;
 <div class="tab-content data-tab">
 
     <div class="form-group field-term-parent_id">
-        <label for="term-parent_id" class="control-label"><?= Yii::t('ecommerce', 'Parent'); ?></label>
+        <label for="term-parent_id" class="control-label"><?= Yii::t('infoweb/taxonomy', 'Parent'); ?></label>
         <?= Html::dropDownList('Term[parent_id]', $parent_id, $terms, [
             'class' => 'form-control',
             'id' => 'term-parent_id',

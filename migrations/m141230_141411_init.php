@@ -39,6 +39,7 @@ class m141230_141411_init extends Migration
             'term_id'               => Schema::TYPE_INTEGER . ' NOT NULL',
             'language'              => Schema::TYPE_STRING . '(2) NOT NULL',
             'name'                  => Schema::TYPE_STRING . '(255) NOT NULL',
+            'content'               => Schema::TYPE_TEXT . ' NOT NULL',
             'created_at'            => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL',
             'updated_at'            => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL',
         ], $tableOptions);

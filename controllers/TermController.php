@@ -102,7 +102,7 @@ class TermController extends Controller
 
                     // Save the main model
                     if (!$model->load($post) || !$model->appendTo($parent)) {
-                        throw new Exception(Yii::t('ecommerce', 'Failed to save the node'));
+                        throw new Exception(Yii::t('infoweb/cms', 'Failed to save the node'));
                     }
 
                     // Save the translations
@@ -113,9 +113,10 @@ class TermController extends Controller
                         // Set the translation language and attributes
                         $model->language        = $languageId;
                         $model->name            = $data['name'];
+                        $model->content         = $data['content'];
 
                         if (!$model->saveTranslation()) {
-                            throw new Exception(Yii::t('ecommerce', 'Failed to save the translation'));
+                            throw new Exception(Yii::t('infoweb/cms', 'Failed to save the translation'));
                         }
                     }
 
@@ -209,28 +210,28 @@ class TermController extends Controller
 
                     // Save the main model
                     if (!$model->load($post)) {
-                        throw new Exception(Yii::t('ecommerce', 'Failed to load the node'));
+                        throw new Exception(Yii::t('infoweb/cms', 'Failed to load the node'));
                     }
 
                     // If there is a new parent, move as last
                     if ($parent->id <> $model->parent()->one()->id) {
 
                         if (!$model->moveAsLast($parent)) {
-                            throw new Exception(Yii::t('ecommerce', 'Failed to update the node'));
+                            throw new Exception(Yii::t('infoweb/cms', 'Failed to update the node'));
                         }
 
                     // If there is a ancestor sibling, move after the sibling
                     } elseif (isset($previous)) {
 
                         if (!$model->moveAfter($previous)) {
-                            throw new Exception(Yii::t('ecommerce', 'Failed to update the node'));
+                            throw new Exception(Yii::t('infoweb/cms', 'Failed to update the node'));
                         }
 
                     // Or else, move as first
                     } else {
 
                         if (!$model->moveAsFirst($parent)) {
-                            throw new Exception(Yii::t('ecommerce', 'Failed to update the node'));
+                            throw new Exception(Yii::t('infoweb/cms', 'Failed to update the node'));
                         }
 
                     }
@@ -241,11 +242,12 @@ class TermController extends Controller
                         $data = $post['Lang'][$languageId];
 
                         // Set the translation language and attributes
-                        $model->language    = $languageId;
-                        $model->name        = $data['name'];
+                        $model->language        = $languageId;
+                        $model->name            = $data['name'];
+                        $model->content         = $data['content'];
 
                         if (!$model->saveTranslation()) {
-                            throw new Exception(Yii::t('ecommerce', 'Failed to save the translation'));
+                            throw new Exception(Yii::t('infoweb/cms', 'Failed to save the translation'));
                         }
                     }
 
@@ -255,7 +257,7 @@ class TermController extends Controller
                     $model->language = Yii::$app->language;
 
                     // Set flash message
-                    Yii::$app->getSession()->setFlash('Term', Yii::t('app', '{item} has been updated', ['item' => $model->name]));
+                    Yii::$app->getSession()->setFlash('term', Yii::t('app', '{item} has been updated', ['item' => $model->name]));
 
                     // Take appropriate action based on the pushed button
                     if (isset($post['close'])) {
@@ -309,7 +311,7 @@ class TermController extends Controller
 
         // Set flash message
         $model->language = Yii::$app->language;
-        Yii::$app->getSession()->setFlash('term', Yii::t('ecommerce', '{item} and descendants have been deleted', ['item' => $model->name]));
+        Yii::$app->getSession()->setFlash('term', Yii::t('infoweb/cms', '{item} and descendants have been deleted', ['item' => $model->name]));
 
         return $this->redirect(['index']);
     }
