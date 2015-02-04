@@ -97,6 +97,6 @@ class Term extends ActiveRecord
     }
 
     public function getNews() {
-        return $this->hasOne(News::className(), ['term_id' => 'id']);
+        return $this->hasMany(News::className(), ['term_id' => 'id'])->orderBy(['date' => SORT_DESC]);
     }
 }
