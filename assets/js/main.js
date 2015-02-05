@@ -40,7 +40,6 @@ $(document).on('ready pjax:success', function() {
 
     /**
      * Active toggle
-     * @todo Move to cms, or remove
      */
     $(document).on('click', '[data-toggle-active-term]', function(e){
 
@@ -78,7 +77,7 @@ $(document).on('ready pjax:success', function() {
             // l is the main container
             // e is the element that was moved
 
-            // @todo Improve this code
+            // @todo Rewrite this code
 
             // Initialize vars
             var term = $(e).data('term'),
@@ -135,13 +134,13 @@ $(document).on('ready pjax:success', function() {
 
                     if (data.status == 1)
                     {
-                        // @todo Add message
+                        // @todo Add flash message
                         //console.log('success');
                         $.pjax.reload({container: '#pjax-container'});
 
 
                     } else {
-                        // @todo Add message
+                        // @todo Add flash message
                         //console.log('fail');
                     }
                 }

@@ -24,7 +24,7 @@ to the require section of your `composer.json` file.
 Usage
 -----
 
-Once the extension is installed, simply modify your backend configuration as follows:
+Once the extension is installed, simply modify your backend configuration as follows (if you have the infoweb/cms module installed):
 
 ```php
 'modules' => [
@@ -34,7 +34,7 @@ Once the extension is installed, simply modify your backend configuration as fol
     ],
     ...
     'cms' => [
-        sideBarItems => [
+        'sideBarItems' => [
             'modules' => [
                 [
                     'label'     => 'Taxonomy',
