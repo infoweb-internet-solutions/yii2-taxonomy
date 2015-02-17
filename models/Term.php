@@ -99,4 +99,20 @@ class Term extends ActiveRecord
     public function getNews() {
         return $this->hasMany(News::className(), ['term_id' => 'id'])->orderBy(['date' => SORT_DESC]);
     }
+
+    /**
+     * Hack for category routes
+     *
+     * @return array
+     */
+    public function getUrl() {
+
+        if ($this->id == 4) {
+            $url = ['site/gallery'];
+        } else {
+            $url = ['site/news', 'term-id' => $this->id];
+        }
+
+        return $url;
+    }
 }
