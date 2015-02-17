@@ -108,7 +108,7 @@ class Term extends ActiveRecord
     public function getUrl() {
 
         if ($this->id == 4) {
-            $url = ['site/gallery'];
+            $url = ['site/gallery', 'term-id' => $this->id];
         } else {
             $url = ['site/news', 'term-id' => $this->id];
         }
