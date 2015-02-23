@@ -109,6 +109,8 @@ class Term extends ActiveRecord
 
         if ($this->id == 4) {
             $url = ['site/gallery', 'term-id' => $this->id];
+        } elseif ($this->id == 9) {
+            $url = ['site/team', 'team-id' => $this->id];
         } else {
             $url = ['site/news', 'term-id' => $this->id];
         }
