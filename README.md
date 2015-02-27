@@ -32,28 +32,15 @@ Once the extension is installed, simply modify your backend configuration as fol
     'taxonomy' => [
         'class' => 'infoweb\taxonomy\Module',
     ],
-    ...
-    'cms' => [
-        'sideBarItems' => [
-            'modules' => [
-                [
-                    'label'     => 'Taxonomy',
-                    'i18nGroup' => 'infoweb/taxonomy',
-                    'url'       => '/taxonomy/term',
-                    'authItem'  => 'showTaxonomyModule',
-                ],
-            ],
-        ],
-    ],
 ],
 ```
 
-Import the translations and use category 'infoweb/taxonomy':
+Optional: Import the translations and use category 'infoweb/taxonomy':
 ```
 yii i18n/import @infoweb/taxonomy/messages
 ```
 
-To use the module, execute yii migration
+Execute yii migration
 ```
 yii migrate/up --migrationPath=@vendor/infoweb-internet-solutions/yii2-taxonomy/migrations
 ```

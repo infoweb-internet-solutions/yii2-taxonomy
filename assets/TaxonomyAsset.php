@@ -19,7 +19,6 @@ class TaxonomyAsset extends AssetBundle
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
-        'infoweb\cms\CMSAsset',
         'infoweb\taxonomy\assets\NestableAsset',
         'infoweb\taxonomy\assets\CookieAsset',
     ];

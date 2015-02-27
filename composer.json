@@ -20,13 +20,14 @@
             "homepage": "http://www.infoweb.be/"
         }
     ],
-    "minimum-stability": "dev",
 	"require": {
 	    "yiisoft/yii2": "*",
         "bower-asset/jquery-cookie": "@stable",
         "bower-asset/bootstrap-select": "@stable",
         "creocoder/yii2-nested-sets": "@stable",
-        "2amigos/yii2-translateable-behavior" : "@stable"
+        "2amigos/yii2-translateable-behavior" : "@stable",
+        "kartik-v/yii2-icons": "@stable",
+        "yiisoft/yii2-jui": "@stable"
 	},
 	"autoload": {
 		"psr-4": {

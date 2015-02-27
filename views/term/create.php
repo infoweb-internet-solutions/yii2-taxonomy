@@ -6,10 +6,10 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model infoweb\taxonomy\models\Term */
 
-$this->title = Yii::t('infoweb/cms', 'Create {modelClass}', [
-    'modelClass' =>  Yii::t('infoweb/taxonomy', 'Term'),
+$this->title = Yii::t('app', 'Create {modelClass}', [
+    'modelClass' =>  Yii::t('app', 'Term'),
 ]);
-$this->params['breadcrumbs'][] = ['label' => Yii::t('infoweb/taxonomy', 'Terms'), 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Terms'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="term-create">

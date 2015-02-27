@@ -43,7 +43,7 @@ class TermController extends Controller
         $root = 0;
 
         return $this->render('index', [
-            'tree' => Term::find()->sortableTree($root),
+            'tree' => Term::sortableTree($root),
         ]);
     }
 

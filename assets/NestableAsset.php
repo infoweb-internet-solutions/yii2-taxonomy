@@ -5,7 +5,7 @@ use yii\web\AssetBundle as AssetBundle;
 
 class NestableAsset extends AssetBundle
 {
-    public $sourcePath = '@infoweb/taxonomy/assets';
+    public $sourcePath = '@bower/nestable2';
 
     public $js = [
         'js/jquery.nestable.js',

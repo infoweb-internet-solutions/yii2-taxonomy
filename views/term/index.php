@@ -1,18 +1,20 @@
 <?php
 use yii\helpers\Html;
 
-use infoweb\taxonomy\models\Term;
 use infoweb\taxonomy\TaxonomyAsset;
 use yii\widgets\Pjax;
+use kartik\icons\Icon;
 
 /* @var $this yii\web\View */
 /* @var $searchModel infoweb\taxonomy\models\TermSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('infoweb/taxonomy', 'Terms');
+$this->title = Yii::t('app', 'Terms');
 $this->params['breadcrumbs'][] = $this->title;
 
 TaxonomyAsset::register($this);
+
+Icon::map($this, Icon::FA);
 
 ?>
 <div class="term-index">
@@ -22,7 +24,7 @@ TaxonomyAsset::register($this);
         <?php // Buttons ?>
         <div class="pull-right">
             <?= Html::a(Yii::t('app', 'Create {modelClass}', [
-                'modelClass' => Yii::t('infoweb/taxonomy', 'Term'),
+                'modelClass' => Yii::t('app', 'Term'),
             ]), ['create'], ['class' => 'btn btn-success']) ?>
         </div>
     </h1>

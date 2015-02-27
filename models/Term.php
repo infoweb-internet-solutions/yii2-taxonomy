@@ -6,8 +6,9 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use dosamigos\translateable\TranslateableBehavior;
-use creocoder\behaviors\NestedSetBehavior;
-use creocoder\behaviors\NestedSetQuery;
+use creocoder\nestedsets\NestedSetsBehavior;
+use yii\helpers\Html;
+use kartik\icons\Icon;
 
 /**
  * This is the model class for table "taxonomy".
@@ -52,15 +53,23 @@ class Term extends ActiveRecord
                 ],
                 'value' => function() { return time(); },
             ],
-            [
-                'class' => NestedSetBehavior::className(),
+            'tree' => [
+                'class' => NestedSetsBehavior::className(),
+                'treeAttribute' => 'tree',
             ],
+        ];
+    }
+
+    public function transactions()
+    {
+        return [
+            self::SCENARIO_DEFAULT => self::OP_ALL,
         ];
     }
 
     public static function find()
     {
-        return new NestedSetQuery(get_called_class());
+        return new TermQuery(get_called_class());
     }
 
     /**
@@ -79,11 +88,10 @@ class Term extends ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('infoweb/taxonomy', 'ID'),
-            'root' => Yii::t('infoweb/taxonomy', 'Root'),
-            'parent' => Yii::t('infoweb/taxonomy', 'Parent'),
-            'level' => Yii::t('infoweb/taxonomy', 'Level'),
-            'active' => Yii::t('infoweb/cms', 'Active'),
+            'root' => Yii::t('app', 'Root'),
+            'parent' => Yii::t('app', 'Parent'),
+            'level' => Yii::t('app', 'Level'),
+            'active' => Yii::t('app', 'Active'),
         ];
     }
 
@@ -93,10 +101,6 @@ class Term extends ActiveRecord
     public function getTranslations()
     {
         return $this->hasMany(Lang::className(), ['term_id' => 'id']);
-    }
-
-    public function getNews() {
-        return $this->hasMany(News::className(), ['term_id' => 'id'])->orderBy(['date' => SORT_DESC]);
     }
 
     /**
@@ -115,5 +119,85 @@ class Term extends ActiveRecord
         }
 
         return $url;
+    }
+
+    public static function sortableTree($root = 1, $level = null)
+    {
+        $terms = Term::find()->leaves()->all();
+
+        $newLine = "\n";
+
+        $res = Html::beginTag('div', ['class' => 'dd', 'id' => 'sortable']) . $newLine;
+
+        foreach ($terms as $n => $term)
+        {
+            if ($term->level == $level) {
+                $res .= Html::endTag('li') . $newLine;
+            } elseif ($term->level > $level) {
+                $res .= Html::beginTag('ol', ['class' => 'dd-list', 'data-level' => $term->level - 1]) . $newLine;
+            } else {
+                $res .= Html::endTag('li') . $newLine;
+
+                for ($i = $level - $term->level; $i; $i--) {
+                    $res .= Html::endTag('ol') . $newLine;
+                    $res .= Html::endTag('li') . $newLine;
+                }
+            }
+
+            $res .= Html::beginTag('li', ['class' => 'dd-item', 'data-term' => $term->id]) . $newLine;
+
+            //$res .= Html::beginTag('div', ['class' => (($n%2==0) ? 'odd' : 'even') /*, 'style' => 'padding-left: ' . (30 * ($model->level - 1)) . 'px'*/]);
+
+            $res .= Html::beginTag('div', ['class' => 'dd-handle']);
+            $res .= Icon::show('arrows', ['class' => 'fa-fw']);
+            $res .= Html::endTag('div') . $newLine;
+
+            $res .= Html::beginTag('div', ['class' => 'dd-content' . (($n%2==0) ? ' odd' : ' even')]);
+            $res .= Html::encode($term->name);
+
+            $res .= Html::beginTag('span', ['class' => 'action-buttons']);
+            $res .= Html::a(Html::tag('span', '', ['class' => 'glyphicon glyphicon-pencil']), Url::toRoute(['update', 'id' => $term->id]), [
+                'data-toggle' => 'tooltip',
+                'title' => Yii::t('ecommerce', 'Update'),
+                'data-pjax' => 0
+            ]);
+            $res .= Html::a(Html::tag('span', '', ['class' => 'glyphicon glyphicon-trash']), Url::toRoute(['delete', 'id' => $term->id]), [
+                'data-toggle' => 'tooltip',
+                'title' => Yii::t('ecommerce', 'Delete'),
+                'data-id' => "delete-{$term->id}",
+                'data-pjax' => 0,
+                'data-method' => 'post',
+                'data-confirm' => Yii::t('ecommerce', 'Are you sure you want to delete this item?'),
+            ]);
+            $res .= Html::a(Html::tag('span', '', ['class' => 'glyphicon glyphicon-eye-' . (($term->active == 1) ? 'open' : 'close')]), '#', [
+                'data-toggle' => 'tooltip',
+                'title' => Yii::t('ecommerce', 'Toggle active'),
+                'data-pjax' => 0,
+                'data-toggle-active-term' => $term->id,
+            ]);
+
+            $res .= Html::endTag('span');
+
+            $children = $term->descendants()->count();
+            if ($children > 0) {
+                $res .= Html::tag('span', " ({$children})", ['class' => 'children']) ;
+            }
+
+            $res .= Html::endTag('div') . $newLine;
+
+            //$res .= Html::endTag('div') . $newLine;
+
+            $level = $term->level;
+        }
+
+        for ($i = $level; $i; $i--) {
+            $res .= Html::endTag('li') . $newLine;
+            $res .= Html::endTag('ol') . $newLine;
+        }
+
+        $res .= Html::endTag('div');
+
+        return $res;
+
     }
 }
