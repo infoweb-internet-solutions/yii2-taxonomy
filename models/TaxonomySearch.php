@@ -39,7 +39,7 @@ class TaxonomySearch extends Term
      */
     public function search($params)
     {
-        $query = Term::find();
+        $query = Term::find()->roots();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -50,14 +50,7 @@ class TaxonomySearch extends Term
         }
 
         $query->andFilterWhere([
-            'id' => $this->id,
-            'root' => $this->root,
-            'lft' => $this->lft,
-            'rgt' => $this->rgt,
-            'level' => $this->level,
             'active' => $this->active,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
         ]);
 
         return $dataProvider;

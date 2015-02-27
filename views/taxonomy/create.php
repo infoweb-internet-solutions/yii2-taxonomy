@@ -5,14 +5,13 @@ use yii\helpers\Html;
 /* @var $this yii\web\View */
 /* @var $model infoweb\taxonomy\models\Term */
 
-$this->title = Yii::t('app', 'Update {modelClass}', [
-    'modelClass' => Yii::t('app', 'Taxonomy'),
+$this->title = Yii::t('app', 'Create {modelClass}', [
+    'modelClass' =>  Yii::t('app', 'Taxonomy'),
 ]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Taxonomy'), 'url' => ['index']];
-$this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['update', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
+$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="term-update">
+<div class="taxonomy-create">
 
     <h1><?= Html::encode($this->title) ?></h1>
 

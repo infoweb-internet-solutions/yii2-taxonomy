@@ -32,6 +32,9 @@ Once the extension is installed, simply modify your backend configuration as fol
     'taxonomy' => [
         'class' => 'infoweb\taxonomy\Module',
     ],
+   'gridview' =>  [
+        'class' => '\kartik\grid\Module'
+    ],
 ],
 
 'language' => 'en',

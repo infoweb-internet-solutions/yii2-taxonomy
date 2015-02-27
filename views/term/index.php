@@ -10,6 +10,7 @@ use kartik\icons\Icon;
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Terms');
+$this->params['breadcrumbs'][] = ['label' => Yii::t('app', Yii::t('app', 'Taxonomy')), 'url' => ['/taxonomy/taxonomy/index']];
 $this->params['breadcrumbs'][] = $this->title;
 
 TaxonomyAsset::register($this);

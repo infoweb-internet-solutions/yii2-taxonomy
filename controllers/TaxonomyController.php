@@ -151,8 +151,6 @@ class TaxonomyController extends Controller
 
         return $this->render('create', [
             'model' => $model,
-            'terms' => $model::find()->dropDownListItems($root),
-            'parent_id' => $root,
         ]);
     }
 
@@ -166,9 +164,6 @@ class TaxonomyController extends Controller
     {
         $languages = Yii::$app->params['languages'];
         $model = Term::findOne($id);
-
-        // @todo Get the root
-        $root = 1;
 
         try {
 
@@ -281,8 +276,6 @@ class TaxonomyController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'terms' => $model::find()->dropDownListItems($root),
-            'parent_id' => $model->parents(1)->one()->id,
         ]);
     }
 
