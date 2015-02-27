@@ -20,10 +20,10 @@ class m141230_141411_init extends Migration
         // Create 'terms' table
         $this->createTable('{{%terms}}', [
             'id'                    => Schema::TYPE_PK,
-            'root'                  => Schema::TYPE_INTEGER . ' NOT NULL',
+            'tree'                  => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL',
             'lft'                   => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL',
             'rgt'                   => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL',
-            'level'                 => Schema::TYPE_SMALLINT . ' UNSIGNED NOT NULL',
+            'depth'                 => Schema::TYPE_SMALLINT . ' UNSIGNED NOT NULL',
             'active'                => 'TINYINT(3) UNSIGNED NOT NULL DEFAULT \'1\'',
             'created_at'            => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL',
             'updated_at'            => Schema::TYPE_INTEGER . ' UNSIGNED NOT NULL',

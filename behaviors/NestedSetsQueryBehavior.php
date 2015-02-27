@@ -25,40 +25,37 @@ use infoweb\taxonomy\models\Term;
  */
 class NestedSetsQueryBehavior extends BaseNestedSetsQueryBehavior
 {
-    public function sortableTree($root = 1, $level = null)
+    // @todo Update code
+    public function sortableTree($root = 1, $depth = 0)
     {
-        $model = new $this->owner->modelClass();
+        $model = Term::findOne($root);
 
-        $terms = Term::find()->leaves()->all();
+        $terms = $model->find()->addOrderBy('lft')->where("{$model->depthAttribute} > {$depth}")->all();
 
-        //echo '<pre>'; print_r($terms); echo '</pre>'; exit();
-
-        $newLine = "\n";
-
-        $res = Html::beginTag('div', ['class' => 'dd', 'id' => 'sortable']) . $newLine;
+        $res = Html::beginTag('div', ['class' => 'dd', 'id' => 'sortable']) . PHP_EOL;
 
         foreach ($terms as $n => $term)
         {
-            if ($term->{$model->depthAttribute} == $level) {
-                $res .= Html::endTag('li') . $newLine;
-            } elseif ($term->{$model->depthAttribute} > $level) {
-                $res .= Html::beginTag('ol', ['class' => 'dd-list', 'data-level' => $term->{$model->depthAttribute} - 1]) . $newLine;
+            if ($term->{$model->depthAttribute} == $depth) {
+                $res .= Html::endTag('li') . PHP_EOL;
+            } elseif ($term->{$model->depthAttribute} > $depth) {
+                $res .= Html::beginTag('ol', ['class' => 'dd-list', 'data-level' => $term->{$model->depthAttribute} - 1]) . PHP_EOL;
             } else {
-                $res .= Html::endTag('li') . $newLine;
+                $res .= Html::endTag('li') . PHP_EOL;
 
-                for ($i = $level - $term->{$model->depthAttribute}; $i; $i--) {
-                    $res .= Html::endTag('ol') . $newLine;
-                    $res .= Html::endTag('li') . $newLine;
+                for ($i = $depth - $term->{$model->depthAttribute}; $i; $i--) {
+                    $res .= Html::endTag('ol') . PHP_EOL;
+                    $res .= Html::endTag('li') . PHP_EOL;
                 }
             }
 
-            $res .= Html::beginTag('li', ['class' => 'dd-item', 'data-term' => $term->id]) . $newLine;
+            $res .= Html::beginTag('li', ['class' => 'dd-item', 'data-term' => $term->id]) . PHP_EOL;
 
             //$res .= Html::beginTag('div', ['class' => (($n%2==0) ? 'odd' : 'even') /*, 'style' => 'padding-left: ' . (30 * ($model->level - 1)) . 'px'*/]);
 
             $res .= Html::beginTag('div', ['class' => 'dd-handle']);
             $res .= Icon::show('arrows', ['class' => 'fa-fw']);
-            $res .= Html::endTag('div') . $newLine;
+            $res .= Html::endTag('div') . PHP_EOL;
 
             $res .= Html::beginTag('div', ['class' => 'dd-content' . (($n%2==0) ? ' odd' : ' even')]);
             $res .= Html::encode($term->name);
@@ -91,21 +88,56 @@ class NestedSetsQueryBehavior extends BaseNestedSetsQueryBehavior
                 $res .= Html::tag('span', " ({$children})", ['class' => 'children']) ;
             }
 
-            $res .= Html::endTag('div') . $newLine;
+            $res .= Html::endTag('div') . PHP_EOL;
 
-            //$res .= Html::endTag('div') . $newLine;
+            //$res .= Html::endTag('div') . PHP_EOL;
 
-            $level = $term->{$model->depthAttribute};
+            $depth = $term->{$model->depthAttribute};
         }
 
-        for ($i = $level; $i; $i--) {
-            $res .= Html::endTag('li') . $newLine;
-            $res .= Html::endTag('ol') . $newLine;
+        for ($i = $depth; $i; $i--) {
+            $res .= Html::endTag('li') . PHP_EOL;
+            $res .= Html::endTag('ol') . PHP_EOL;
         }
 
         $res .= Html::endTag('div');
 
         return $res;
 
+    }
+
+
+    /**
+     * Returns a structured list of terms, formatted for usage in a dropdownlist
+     *
+     * @param   int     $root       The id of the root category
+     * @return  array
+     */
+    public static function dropDownListItems($root = null)
+    {
+        $items = [];
+
+        // Load the provided root category and check if it exists
+        $rootTerm = Term::findOne($root);
+
+        if (!$rootTerm)
+            return $items;
+
+        // Load all categories except the root category
+        $terms = Term::find()->where(['tree' => $rootTerm->id])->addOrderBy($rootTerm->leftAttribute)->all();
+
+        foreach ($terms as $k => $term) {
+
+            $arrow = '';
+
+            if ($term->{$term->depthAttribute} > 0) {
+                $arrow = str_repeat("—", ($term->{$rootTerm->depthAttribute} * 2));
+                $arrow .= "> ";
+            }
+
+            $items[$term->id] = $arrow . $term->name;
+        }
+
+        return $items;
     }
 }

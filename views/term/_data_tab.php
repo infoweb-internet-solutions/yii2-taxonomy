@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Html;
-use kartik\widgets\SwitchInput;
+use kartik\switchinput\SwitchInput;
 ?>
 <div class="tab-content data-tab">
 
@@ -9,7 +9,7 @@ use kartik\widgets\SwitchInput;
         <?= Html::dropDownList('Term[parent_id]', $parent_id, $terms, [
             'class' => 'form-control',
             'id' => 'term-parent_id',
-            'options' => $model->disabled(),
+            'options' => $model->disabledTerms(),
         ]) ?>
         <div class="help-block"></div>
     </div>

@@ -10,7 +10,7 @@ $this->title = Yii::t('app', 'Update {modelClass}', [
 ]);
 $this->params['breadcrumbs'][] = ['label' => Yii::t('app', 'Terms'), 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $model->name, 'url' => ['update', 'id' => $model->id]];
-$this->params['breadcrumbs'][] = Yii::t('infoweb/cms', 'Update');
+$this->params['breadcrumbs'][] = Yii::t('app', 'Update');
 ?>
 <div class="term-update">
 

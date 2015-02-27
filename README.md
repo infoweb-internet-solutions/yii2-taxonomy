@@ -24,7 +24,7 @@ to the require section of your `composer.json` file.
 Usage
 -----
 
-Once the extension is installed, simply modify your backend configuration as follows (if you have the infoweb/cms module installed):
+Once the extension is installed, simply modify your backend configuration as follows:
 
 ```php
 'modules' => [
@@ -51,3 +51,11 @@ yii migrate/up --migrationPath=@vendor/infoweb-internet-solutions/yii2-taxonomy/
 
 @todo: Add config setttings
 https://github.com/kartik-v/yii2-icons
+
+config/common/params
+
+'languages' => [
+    'en'    => 'English',
+    'nl'    => 'Dutch',
+],
+

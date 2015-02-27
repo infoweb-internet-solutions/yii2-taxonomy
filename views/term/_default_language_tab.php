@@ -9,7 +9,7 @@ use mihaildev\ckeditor\CKEditor;
 
     <?= $form->field($model, "[{$model->language}]content")->widget(CKEditor::className(), [
         'name' => "Lang[{$model->language}][content]",
-        'editorOptions' => Yii::$app->getModule('cms')->getCKEditorOptions(),
+        'editorOptions' => (Yii::$app->hasModule('cms')) ? Yii::$app->getModule('cms')->getCKEditorOptions() : [],
     ]); ?>
 </div>
 

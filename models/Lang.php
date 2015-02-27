@@ -8,14 +8,6 @@ use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "terms_lang".
- *
- * @property integer $term_id
- * @property string $language
- * @property string $name
- * @property string $created_at
- * @property string $updated_at
- *
- * @property Term $term
  */
 class Lang extends \yii\db\ActiveRecord
 {

@@ -5,12 +5,11 @@ namespace infoweb\taxonomy\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use infoweb\taxonomy\models\Term;
 
 /**
  * TermSearch represents the model behind the search form about `infoweb\taxonomy\models\Term`.
  */
-class TermSearch extends Term
+class TaxonomySearch extends Term
 {
     /**
      * @inheritdoc

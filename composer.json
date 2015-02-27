@@ -27,7 +27,9 @@
         "creocoder/yii2-nested-sets": "@stable",
         "2amigos/yii2-translateable-behavior" : "@stable",
         "kartik-v/yii2-icons": "@stable",
-        "yiisoft/yii2-jui": "@stable"
+        "yiisoft/yii2-jui": "@stable",
+        "mihaildev/yii2-ckeditor": "@stable",
+        "kartik-v/yii2-widget-switchinput": "@stable"
 	},
 	"autoload": {
 		"psr-4": {

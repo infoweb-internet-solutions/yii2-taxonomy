@@ -10,15 +10,6 @@ use infoweb\taxonomy\behaviors\NestedSetsBehavior;
 
 /**
  * This is the model class for table "taxonomy".
- *
- * @property string $id
- * @property string $root
- * @property string $lft
- * @property string $rgt
- * @property integer $level
- * @property integer $active
- * @property string $created_at
- * @property string $updated_at
  */
 class Term extends ActiveRecord
 {
@@ -101,22 +92,29 @@ class Term extends ActiveRecord
         return $this->hasMany(Lang::className(), ['term_id' => 'id']);
     }
 
-    /**
-     * Hack for category routes
-     *
-     * @return array
-     */
-    public function getUrl() {
 
-        if ($this->id == 4) {
-            $url = ['site/gallery', 'term-id' => $this->id];
-        } elseif ($this->id == 9) {
-            $url = ['site/team', 'team-id' => $this->id];
-        } else {
-            $url = ['site/news', 'term-id' => $this->id];
+    /**
+     * Get disabled terms for parent dropdown
+     *
+     * @return mixed
+     */
+    public function disabledTerms() {
+
+        $results = [];
+
+        if (!$this->getIsNewRecord()) {
+
+            $children = $this->children()->all();
+
+            $results[$this->id] = ['disabled' => true];
+
+            foreach ($children as $n => $child) {
+                $results[$child->id] = ['disabled' => true];
+            }
         }
 
-        return $url;
+        return $results;
     }
+
 
 }

@@ -7,8 +7,8 @@ if (typeof openTreeItems === 'undefined') {
     openTreeItems = JSON.parse(openTreeItems);
 }
 
-$(document).on('ready pjax:success', function() {
-
+//$(document).on('ready pjax:success', function() {
+$(function() {
     /**
      * Save / remove cookie on collapse / expand
      */
@@ -122,7 +122,8 @@ $(document).on('ready pjax:success', function() {
 
             // Post the data
             $.ajax({
-                url: 'sort',
+                // @todo Rewrite url, pass as php var
+                url: 'index.php?r=taxonomy/term/sort',
                 type: 'POST',
                 data: {
                     term : term,

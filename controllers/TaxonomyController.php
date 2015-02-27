@@ -12,23 +12,21 @@ use yii\base\Model;
 use yii\base\Exception;
 
 use infoweb\taxonomy\models\Term;
-use infoweb\taxonomy\models\TermSearch;
 use infoweb\taxonomy\models\Lang;
+use infoweb\taxonomy\models\TaxonomySearch;
 
 /**
  * TermController implements the CRUD actions for Term model.
  */
-class TermController extends Controller
+class TaxonomyController extends Controller
 {
     public function behaviors()
     {
         return [
             'verbs' => [
                 'class' => VerbFilter::className(),
-                // @todo Add more actions
                 'actions' => [
                     'delete' => ['post'],
-                    'position' => ['post'],
                 ],
             ],
         ];
@@ -40,11 +38,12 @@ class TermController extends Controller
      */
     public function actionIndex()
     {
-        // @todo Get current taxonomy id
-        $root = 1;
+        $searchModel = new TaxonomySearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'tree' => Term::find()->sortableTree($root),
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
