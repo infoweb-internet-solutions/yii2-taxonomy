@@ -24,8 +24,8 @@
 	"require": {
 	   "yiisoft/yii2": "*",
       "bower-asset/jquery-cookie": "@stable",
-      "bower-asset/bootstrap-select": "@stable",
-      "wbraganca/yii2-nested-set-behavior": "dev-infoweb as dev-master"
+      "bower-asset/bootstrap-select": "@stable"
+      
 	},
 	"autoload": {
 		"psr-4": {
