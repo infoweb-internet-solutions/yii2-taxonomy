@@ -22,10 +22,10 @@
     ],
     "minimum-stability": "dev",
 	"require": {
-	   "yiisoft/yii2": "*",
-      "bower-asset/jquery-cookie": "@stable",
-      "bower-asset/bootstrap-select": "@stable"
-      
+	    "yiisoft/yii2": "*",
+        "bower-asset/jquery-cookie": "@stable",
+        "bower-asset/bootstrap-select": "@stable",
+        "creocoder/yii2-nested-sets": "@stable"
 	},
 	"autoload": {
 		"psr-4": {
