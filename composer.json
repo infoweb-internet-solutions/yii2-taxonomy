@@ -25,7 +25,8 @@
 	    "yiisoft/yii2": "*",
         "bower-asset/jquery-cookie": "@stable",
         "bower-asset/bootstrap-select": "@stable",
-        "creocoder/yii2-nested-sets": "@stable"
+        "creocoder/yii2-nested-sets": "@stable",
+        "2amigos/yii2-translateable-behavior" : "@stable"
 	},
 	"autoload": {
 		"psr-4": {

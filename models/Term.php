@@ -6,9 +6,8 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use dosamigos\translateable\TranslateableBehavior;
-use wbraganca\behaviors\NestedSetBehavior;
-use wbraganca\behaviors\NestedSetQuery;
-use infoweb\news\models\News;
+use creocoder\behaviors\NestedSetBehavior;
+use creocoder\behaviors\NestedSetQuery;
 
 /**
  * This is the model class for table "taxonomy".
