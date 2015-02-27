@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 
-use infoweb\taxonomy\TaxonomyAsset;
+use infoweb\taxonomy\assets\TaxonomyAsset;
 use yii\widgets\Pjax;
 use kartik\icons\Icon;
 
@@ -14,7 +14,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
 TaxonomyAsset::register($this);
 
-Icon::map($this, Icon::FA);
+Icon::map($this);
 
 ?>
 <div class="term-index">
@@ -33,7 +33,7 @@ Icon::map($this, Icon::FA);
     <?php echo $this->render('_flash_messages'); ?>
 
     <?php Pjax::begin(['id'=>'pjax-container']); ?>
-    <table class="table table-bordered" style="margin: 20px 0 0 0;">
+    <table class="table table-bordered">
         <thead>
         <tr>
             <th>Naam</th>

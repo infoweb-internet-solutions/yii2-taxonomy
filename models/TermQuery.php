@@ -2,7 +2,7 @@
 
 namespace infoweb\taxonomy\models;
 
-use creocoder\nestedsets\NestedSetsQueryBehavior;
+use infoweb\taxonomy\behaviors\NestedSetsQueryBehavior;
 
 class TermQuery extends \yii\db\ActiveQuery
 {

@@ -8,6 +8,6 @@ class NestableAsset extends AssetBundle
     public $sourcePath = '@bower/nestable2';
 
     public $js = [
-        'js/jquery.nestable.js',
+        'jquery.nestable.js',
     ];
 }

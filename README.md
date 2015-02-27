@@ -33,6 +33,9 @@ Once the extension is installed, simply modify your backend configuration as fol
         'class' => 'infoweb\taxonomy\Module',
     ],
 ],
+
+'language' => 'en',
+
 ```
 
 Optional: Import the translations and use category 'infoweb/taxonomy':
@@ -44,3 +47,7 @@ Execute yii migration
 ```
 yii migrate/up --migrationPath=@vendor/infoweb-internet-solutions/yii2-taxonomy/migrations
 ```
+
+
+@todo: Add config setttings
+https://github.com/kartik-v/yii2-icons
