@@ -10,7 +10,7 @@ use infoweb\taxonomy\models\Term;
 /**
  * TermSearch represents the model behind the search form about `infoweb\taxonomy\models\Term`.
  */
-class TermSearch extends Term
+class Search extends Term
 {
     /**
      * @inheritdoc
@@ -18,7 +18,8 @@ class TermSearch extends Term
     public function rules()
     {
         return [
-            [['id', 'root', 'lft', 'rgt', 'level', 'active', 'created_at', 'updated_at'], 'integer'],
+            [['root'], 'integer'],
+            [['name'], 'safe'],
         ];
     }
 
@@ -40,7 +41,8 @@ class TermSearch extends Term
      */
     public function search($params)
     {
-        $query = Term::find();
+
+        $query = Term::find()->joinWith('translations')->roots();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -50,16 +52,7 @@ class TermSearch extends Term
             return $dataProvider;
         }
 
-        $query->andFilterWhere([
-            'id' => $this->id,
-            'root' => $this->root,
-            'lft' => $this->lft,
-            'rgt' => $this->rgt,
-            'level' => $this->level,
-            'active' => $this->active,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
-        ]);
+        $query->andFilterWhere(['name' => $this->name]);
 
         return $dataProvider;
     }

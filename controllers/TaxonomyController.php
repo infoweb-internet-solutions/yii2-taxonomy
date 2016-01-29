@@ -2,6 +2,7 @@
 
 namespace infoweb\taxonomy\controllers;
 
+use infoweb\taxonomy\models\Taxonomy;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -12,13 +13,13 @@ use yii\base\Model;
 use yii\base\Exception;
 
 use infoweb\taxonomy\models\Term;
-use infoweb\taxonomy\models\TermSearch;
+use infoweb\taxonomy\models\Search;
 use infoweb\taxonomy\models\Lang;
 
 /**
- * TermController implements the CRUD actions for Term model.
+ * TaxonmoyController implements the CRUD actions for Term model.
  */
-class TermController extends Controller
+class TaxonomyController extends Controller
 {
     public function behaviors()
     {
@@ -27,7 +28,6 @@ class TermController extends Controller
                 'class' => VerbFilter::className(),
                 'actions' => [
                     'delete' => ['post'],
-                    'position' => ['post'],
                 ],
             ],
         ];
@@ -39,13 +39,12 @@ class TermController extends Controller
      */
     public function actionIndex()
     {
-        // Store the active taxonomy-id in a session var if it is provided through the url
-        if (Yii::$app->request->get('taxonomy-id') != null)  {
-            Yii::$app->session->set('taxonomy.taxonomy-id', Yii::$app->request->get('taxonomy-id'));
-        }
+        $searchModel = Yii::createObject(Search::className());
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-            'tree' => Term::find()->tree(Yii::$app->session->get('taxonomy.taxonomy-id')),
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -56,13 +55,15 @@ class TermController extends Controller
      */
     public function actionCreate()
     {
-        // Get the languages
         $languages = Yii::$app->params['languages'];
 
-        $root = Yii::$app->session->get('taxonomy.taxonomy-id');
+        // Load the model with default values
+        // @todo Setting root to 0 is not necessary, but returns an error when you don't
+        $model = new Term(['root' => 0]);
 
-        // Load the model
-        $model = new Term(['active' => 1]);
+        $returnOptions = [
+            'model' => $model,
+        ];
 
         try {
 
@@ -99,11 +100,9 @@ class TermController extends Controller
                     // Wrap the everything in a database transaction
                     $transaction = Yii::$app->db->beginTransaction();
 
-                    $parent = Term::findOne($post['Term']['parent_id']);
-
                     // Save the main model
-                    if (!$model->load($post) || !$model->appendTo($parent)) {
-                        throw new Exception(Yii::t('app', 'Failed to save the node'));
+                    if (!$model->load($post) || !$model->makeRoot()) {
+                        return $this->render('create', $returnOptions);
                     }
 
                     // Save the translations
@@ -117,7 +116,7 @@ class TermController extends Controller
                         $model->content         = $data['content'];
 
                         if (!$model->saveTranslation()) {
-                            throw new Exception(Yii::t('app', 'Failed to save the translation'));
+                            return $this->render('create', $returnOptions);
                         }
                     }
 
@@ -150,11 +149,7 @@ class TermController extends Controller
             Yii::$app->getSession()->setFlash('term-error', $e->getMessage());
         }
 
-        return $this->render('create', [
-            'model' => $model,
-            'terms' => $model::find()->getDropDownListItems($root),
-            'parent_id' => $root,
-        ]);
+        return $this->render('create', $returnOptions);
     }
 
     /**
@@ -166,9 +161,13 @@ class TermController extends Controller
     public function actionUpdate($id)
     {
         $languages = Yii::$app->params['languages'];
-        $model = Term::findOne($id);
 
-        $root = Yii::$app->session->get('taxonomy.taxonomy-id');
+        // Load the model with default values
+        $model = $this->findModel($id);
+
+        $returnOptions = [
+            'model' => $model,
+        ];
 
         try {
 
@@ -204,39 +203,10 @@ class TermController extends Controller
                     // Wrap the everything in a database transaction
                     $transaction = Yii::$app->db->beginTransaction();
 
-                    $parent = Term::findOne($post['Term']['parent_id']);
-
-                    $previous = $model->prev()->one();
-
                     // Save the main model
-                    if (!$model->load($post)) {
-                        throw new Exception(Yii::t('app', 'Failed to load the node'));
+                    if (!$model->load($post) || !$model->save()) {
+                        return $this->render('update', $returnOptions);
                     }
-
-                    /*
-                    // If there is a new parent, move as last
-                    if ($parent->id <> $model->parents(1)->one()->id) {
-
-                        if (!$model->moveAsLast($parent)) {
-                            throw new Exception(Yii::t('app', 'Failed to update the node'));
-                        }
-
-                    // If there is a ancestor sibling, move after the sibling
-                    } elseif (isset($previous)) {
-
-                        if (!$model->moveAfter($previous)) {
-                            throw new Exception(Yii::t('app', 'Failed to update the node'));
-                        }
-
-                    // Or else, move as first
-                    } else {
-
-                        if (!$model->moveAsFirst($parent)) {
-                            throw new Exception(Yii::t('app', 'Failed to update the node'));
-                        }
-
-                    }
-                    */
 
                     // Save the translations
                     foreach ($languages as $languageId => $languageName) {
@@ -249,7 +219,7 @@ class TermController extends Controller
                         $model->content         = $data['content'];
 
                         if (!$model->saveTranslation()) {
-                            throw new Exception(Yii::t('app', 'Failed to save the translation'));
+                            return $this->render('update', $returnOptions);
                         }
                     }
 
@@ -259,7 +229,7 @@ class TermController extends Controller
                     $model->language = Yii::$app->language;
 
                     // Set flash message
-                    Yii::$app->getSession()->setFlash('term', Yii::t('app', '"{item}" has been updated', ['item' => $model->name]));
+                    Yii::$app->getSession()->setFlash('term', Yii::t('app', '{item} has been updated', ['item' => $model->name]));
 
                     // Take appropriate action based on the pushed button
                     if (isset($post['close'])) {
@@ -281,17 +251,13 @@ class TermController extends Controller
             Yii::$app->getSession()->setFlash('term-error', $e->getMessage());
         }
 
-        return $this->render('update', [
-            'model' => $model,
-            'terms' => $model::find()->getDropDownListItems($root),
-            'parent_id' => $model->parents(1)->one()->id,
-        ]);
+        return $this->render('update', $returnOptions);
     }
 
     /**
-     * Deletes an existing Term model and it's descendants
+     * Deletes an existing Page model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param string $id
      * @return mixed
      */
     public function actionDelete($id)
@@ -300,84 +266,24 @@ class TermController extends Controller
 
         try {
             $transaction = Yii::$app->db->beginTransaction();
-            $model->deleteNode();
+            // @todo Remove children
+            $model->delete();
             $transaction->commit();
-        } catch(Exception $e) {
-
-            if (isset($transaction)) {
-                $transaction->rollBack();
-            }
+        } catch (\yii\base\Exception $e) {
             // Set flash message
-            Yii::$app->getSession()->setFlash('term-error', $e->getMessage());
+            Yii::$app->getSession()->setFlash('page-error', $e->getMessage());
+
+            return $this->redirect(['index']);
         }
 
         // Set flash message
-        $model->language = Yii::$app->language;
-        Yii::$app->getSession()->setFlash('term', Yii::t('app', '"{item}" and descendants have been deleted', ['item' => $model->name]));
+        Yii::$app->getSession()->setFlash('page', Yii::t('app', '{item} has been deleted', ['item' => $model->name]));
 
         return $this->redirect(['index']);
     }
 
-
-    /**
-     * Finds the Term model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Term the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Term::findOne($id)) !== null) {
-            return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
-        }
-    }
-
-    /**
-     * Saves the new sort order
-     * @return mixed
-     */
-    public function actionSort()
-    {
-        try {
-
-            $post = Yii::$app->request->post();
-
-            //if(!isset($post['ids']))
-                //throw new Exception(Yii::t('infoweb/menu', 'Invalid items'));
-
-            // The term you dragged to change it's position
-            $term = Term::findOne($post['term']);
-
-            // The parent or target of the term after your dragged it
-            $parent = Term::findOne($post['parent']);
-
-            // Direction: move the term before, after or first (=new list) the new parent
-            if ($post['direction'] == 'before') {
-                $term->moveBefore($parent);
-            }
-            elseif ($post['direction'] == 'first') {
-                $term->moveAsFirst($parent);
-            } else {
-                $term->moveAfter($parent);
-            }
-
-            $data['status'] = 1;
-
-        } catch (Exception $e) {
-            Yii::error($e->getMessage());
-            $data['status'] = 0;
-        }
-
-        Yii::$app->response->format = 'json';
-        return $data;
-    }
-
     /**
      * Set active state
-     * @param string $id
      * @return mixed
      */
     public function actionActive()
@@ -385,16 +291,22 @@ class TermController extends Controller
         $model = $this->findModel(Yii::$app->request->post('id'));
         $model->active = ($model->active == 1) ? 0 : 1;
 
-        $data['status'] = $model->save();
-        $data['active'] = $model->active;
+        return $model->save();
+    }
 
-        // Set active status for descendants
-        foreach ($model->descendants()->all() as $term) {
-            $term->active = $model->active;
-            $data['status'] = $term->save();
+    /**
+     * Finds the Page model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param string $id
+     * @return Page the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = Term::findOne($id)) !== null) {
+            return $model;
+        } else {
+            throw new NotFoundHttpException(Yii::t('app', 'The requested item does not exist'));
         }
-
-        Yii::$app->response->format = 'json';
-        return $data;
     }
 }

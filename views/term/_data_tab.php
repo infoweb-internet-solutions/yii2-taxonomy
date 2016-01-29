@@ -9,7 +9,7 @@ use kartik\widgets\SwitchInput;
         <?= Html::dropDownList('Term[parent_id]', $parent_id, $terms, [
             'class' => 'form-control',
             'id' => 'term-parent_id',
-            'options' => $model->disabled(),
+            //'options' => $model->disabled(),
         ]) ?>
         <div class="help-block"></div>
     </div>

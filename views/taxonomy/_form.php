@@ -1,26 +1,21 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\ActiveForm;
+use kartik\widgets\ActiveForm;
 use yii\bootstrap\Tabs;
-
-/* @var $this yii\web\View */
-/* @var $model infoweb\taxonomy\models\Term */
-/* @var $form yii\widgets\ActiveForm */
 ?>
-
-<div class="term-form">
-
+<div class="taxonomy-form">
+    
     <?php // Flash messages ?>
     <?php echo $this->render('_flash_messages'); ?>
 
     <?php
     // Init the form
     $form = ActiveForm::begin([
-        'id'                        => 'term-form',
-        'options'                   => ['class' => 'tabbed-form'],
-        'enableAjaxValidation'      => true,
-        'enableClientValidation'    => false
+        'id'                        => 'taxonomy-form',
+        'options'                   => ['class' => 'tabbed-form', 'enctype' => 'multipart/form-data'],
+        'enableAjaxValidation'      => false,
+        'enableClientValidation'    => false,
     ]);
 
     // Initialize the tabs
@@ -32,24 +27,18 @@ use yii\bootstrap\Tabs;
             'label' => Yii::t('app', 'General'),
             'content' => $this->render('_default_tab', ['model' => $model, 'form' => $form]),
             'active' => true,
-            //'options' => ['class' => 'fade in']
         ],
         [
             'label' => Yii::t('app', 'Data'),
-            'content' => $this->render('_data_tab', [
-                'model' => $model,
-                'form' => $form,
-                'terms' => $terms,
-                'parent_id' => $parent_id
-            ]),
-            //'options' => ['class' => 'fade']
+            'content' => $this->render('_data_tab', ['model' => $model, 'form' => $form]),
+            //'visible' => false,
         ],
     ];
 
     // Display the tabs
     echo Tabs::widget(['items' => $tabs]);
     ?>
-
+    
     <div class="form-group buttons">
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create') : Yii::t('app', 'Update'), ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
         <?= Html::submitButton($model->isNewRecord ? Yii::t('app', 'Create & close') : Yii::t('app', 'Update & close'), ['class' => 'btn btn-default', 'name' => 'close']) ?>

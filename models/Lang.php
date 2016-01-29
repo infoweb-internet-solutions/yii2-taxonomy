@@ -77,8 +77,8 @@ class Lang extends \yii\db\ActiveRecord
     {
         return [
             'term_id' => Yii::t('infoweb/taxonomy', 'Term ID'),
-            'language' => Yii::t('infoweb/cms', 'Language'),
-            'name' => Yii::t('infoweb/cms', 'Name'),
+            'language' => Yii::t('app', 'Language'),
+            'name' => Yii::t('app', 'Name'),
         ];
     }
 

@@ -4,7 +4,13 @@ namespace infoweb\taxonomy;
 
 class Module extends \yii\base\Module
 {
-    public $controllerNamespace = 'infoweb\taxonomy\controllers';
+    /**
+     * Allow content duplication with the "duplicateable" plugin
+     * @var boolean
+     */
+    public $allowContentDuplication = true;
+
+    //public $controllerNamespace = 'infoweb\taxonomy\controllers';
 
     public function init()
     {

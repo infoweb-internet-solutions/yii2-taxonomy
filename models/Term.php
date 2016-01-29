@@ -6,9 +6,7 @@ use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use dosamigos\translateable\TranslateableBehavior;
-use wbraganca\behaviors\NestedSetBehavior;
-use wbraganca\behaviors\NestedSetQuery;
-use infoweb\news\models\News;
+use creocoder\nestedsets\NestedSetsBehavior;
 
 /**
  * This is the model class for table "taxonomy".
@@ -53,16 +51,27 @@ class Term extends ActiveRecord
                 ],
                 'value' => function() { return time(); },
             ],
-            [
-                'class' => NestedSetBehavior::className(),
+            'tree' => [
+                'class' => NestedSetsBehavior::className(),
+                'treeAttribute' => 'root',
+                'depthAttribute' => 'level',
             ],
         ];
     }
 
+    public function transactions()
+    {
+        return [
+            self::SCENARIO_DEFAULT => self::OP_ALL,
+        ];
+    }
+
+    /*
     public static function find()
     {
-        return new NestedSetQuery(get_called_class());
+        //return new MenuQuery(get_called_class());
     }
+    */
 
     /**
      * @inheritdoc
@@ -84,7 +93,7 @@ class Term extends ActiveRecord
             'root' => Yii::t('infoweb/taxonomy', 'Root'),
             'parent' => Yii::t('infoweb/taxonomy', 'Parent'),
             'level' => Yii::t('infoweb/taxonomy', 'Level'),
-            'active' => Yii::t('infoweb/cms', 'Active'),
+            'active' => Yii::t('app', 'Active'),
         ];
     }
 
@@ -96,10 +105,6 @@ class Term extends ActiveRecord
         return $this->hasMany(Lang::className(), ['term_id' => 'id']);
     }
 
-    public function getNews() {
-        return $this->hasMany(News::className(), ['term_id' => 'id'])->orderBy(['date' => SORT_DESC]);
-    }
-
     /**
      * Hack for category routes
      *
@@ -107,14 +112,13 @@ class Term extends ActiveRecord
      */
     public function getUrl() {
 
-        if ($this->id == 4) {
-            $url = ['site/gallery', 'term-id' => $this->id];
-        } elseif ($this->id == 9) {
-            $url = ['site/team', 'team-id' => $this->id];
-        } else {
-            $url = ['site/news', 'term-id' => $this->id];
-        }
+        $url = '';
 
         return $url;
+    }
+
+    public static function find()
+    {
+        return new MenuQuery(get_called_class());
     }
 }
